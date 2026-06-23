@@ -38,11 +38,11 @@ Acessível por navegador, sem instalação, no computador e no celular (no celul
 
 ## Vídeo de pitch
 
-(inserir link do vídeo aqui)
+https://drive.google.com/file/d/1dMcQP3R2NBf3V7ifVhTon5Qa23Lw_c5h/view?usp=sharing
 
 ## Pitch ou apresentação
 
-(inserir link dos slides aqui)
+https://canva.link/nrl11wa8sovhy0w
 
 ## Como testar
 
@@ -103,10 +103,6 @@ A geometria das estradas é real, extraída do OpenStreetMap. O risco exibido é
 ## Licença
 
 Projeto de finalidade acadêmica e extensionista, desenvolvido para a Hackathon Extensionista IFRO Ariquemes 2026/1.
-
-## Anexos Importantes!!
-Slide do pitch: https://canva.link/nrl11wa8sovhy0w
-Vídeo do pitch: https://drive.google.com/file/d/1dMcQP3R2NBf3V7ifVhTon5Qa23Lw_c5h/view?usp=sharing
 
 ## Repositório
 
