@@ -45,7 +45,7 @@ valor limite).
 
 **URL:** https://linha-livre.vercel.app/
 **Tecnologias:** React, TypeScript, Vite, Leaflet, OpenStreetMap.
-**Fonte de verdade:** `painel/src/data/trechos.ts` (54 trechos, geometria real
+**Fonte de verdade:** `painel/src/data/trechos.ts` (26 trechos, geometria real
 do OSM; risco previsto pelo Random Forest).
 
 ### Oráculo
@@ -64,7 +64,7 @@ visual é uma função determinística dela.
 
 | ID | Entrada / ação | Resultado esperado (oráculo) |
 |----|----------------|------------------------------|
-| PF-01 | Abrir a URL do painel | Mapa de Ariquemes carrega centralizado; todos os 54 trechos aparecem coloridos por risco; legenda visível |
+| PF-01 | Abrir a URL do painel | Mapa de Ariquemes carrega centralizado; todos os 26 trechos aparecem coloridos por risco; legenda visível |
 | PF-02 | Clicar em um trecho de risco "alta" no mapa | Card de detalhe abre com `classe_risco = alta` (laranja), e drenagem/solo/largura/chuva idênticos a `trechos.ts` |
 | PF-03 | Clicar no mesmo trecho de novo (ou em "ver todas") | Volta à visão geral, sem trecho selecionado |
 | PF-04 | Abrir no celular e alternar abas "Mapa" / "Painel" | Cada aba mostra sua visão; estado de seleção é preservado na troca |
