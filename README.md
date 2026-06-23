@@ -1,95 +1,111 @@
-# LinhaLivre — Plataforma Preditiva de Trafegabilidade em Vicinais de Rondônia
+# LinhaLivre
 
-Modelo de classificação (Random Forest) que prevê a trafegabilidade de estradas vicinais não pavimentadas da Amazônia Ocidental em quatro classes: **alta / média / baixa / intransitável**.
-Hackathon IFRO Ariquemes 2026.
+Plataforma preditiva de trafegabilidade para as estradas vicinais (linhas) de Ariquemes, Rondônia. O sistema cruza dados de clima, solo, topografia e drenagem para antecipar quais trechos têm maior risco de ficarem intransitáveis, transformando a manutenção reativa em ação preventiva.
 
-> **Unidade de análise:** trecho de via (geometria de linha), por data.
-> **Label:** construído por supervisão fraca + verificação amostral. Ver [`PROTOCOLO_ROTULAGEM.md`](./PROTOCOLO_ROTULAGEM.md).
+## Equipe
 
----
+- **Nome da equipe:** Hagatangos
+- **Integrantes:** Bryan, Alexsandro, Leonardo e Yago
+- **Curso/Turma:** Tecnologia em Análise e Desenvolvimento de Sistemas (ADS) — IFRO Campus Ariquemes
+- **Categoria:** Desafio Empresa e Comunidade
+- **Desafio:** Plataforma Preditiva de Trafegabilidade (proponente: Quanyx Tecnologia)
 
-## Estrutura do repositório
+## Problema
 
-```
-linha-livre-RF-training/
-├── README.md
-├── PROTOCOLO_ROTULAGEM.md        # protocolo de rotulagem (ciente de declividade)
-├── requirements.txt
-├── data/
-│   ├── raw/                      # downloads brutos (gitignore p/ rasters grandes)
-│   ├── interim/                  # extrações intermediárias
-│   └── processed/                # tabela final de treino (CSV)
-├── src/
-│   ├── coleta/
-│   │   ├── coleta_open_meteo.py  # ✅ pronto (chuva) — ver exemplo abaixo
-│   │   ├── extrai_declividade.py # TOPODATA → zonal stats na linha (a fazer)
-│   │   └── extrai_solo.py        # IBGE pedologia → join espacial (a fazer)
-│   ├── rotulagem/
-│   │   └── aplica_regra.py       # função de rotulagem (Seção 3 do protocolo)
-│   └── modelo/
-│       └── treina_rf.py          # Random Forest + GroupKFold por trecho_id
-└── trechos/
-    └── trechos.geojson           # linhas dos trechos segmentados (1–2 km)
-```
+O escoamento da produção agropecuária e aquícola de Ariquemes depende das estradas vicinais não pavimentadas, chamadas localmente de linhas. Durante a estação chuvosa, esses trechos ficam intransitáveis: caminhões atolam, produtores ficam isolados e a logística da região trava.
 
----
+Hoje a resposta é reativa. A manutenção só acontece depois que o problema já ocorreu, e não existe registro histórico estruturado de quais trechos falham nem quando. Faltam ferramentas que cruzem as condições de cada via com a previsão do tempo para antecipar o risco.
 
-## Fontes de dados
+**Público impactado:** produtores rurais (incluindo piscicultores e produtores de leite), motoristas de transporte de carga, cooperativas locais, e a Secretaria Municipal de Obras (SEMOSP), que gerencia as linhas, além do DER, responsável pelos travessões.
 
-### ✅ Tier 1 — download imediato (faça agora, baixa dificuldade)
+## Solução
 
-Estas três cobrem 100% de Rondônia, são gratuitas, oficiais e não exigem cadastro complexo. São o suficiente para um dataset defensável.
+O LinhaLivre é composto por três partes que trabalham juntas:
 
-| Camada | Fonte | Acesso | Formato | Como entra na linha |
-|---|---|---|---|---|
-| **Chuva** (72h/7d/30d) | Open-Meteo (reanálise ERA5-Land / Copernicus) | API, sem chave — `archive-api.open-meteo.com` | JSON | GET no centroide da linha; soma de janelas |
-| **Declividade** | TOPODATA / INPE (derivado de SRTM) | download por quadrícula — `dsr.inpe.br/topodata` (ver nota https) | GeoTIFF 30 m | zonal stats (mean/max/frac) no buffer da linha |
-| **Solo** | IBGE — Pedologia estadual de Rondônia | FTP público — `geoftp.ibge.gov.br` (Geociências › Pedologia) | Shapefile | join espacial; classe majoritária por comprimento |
+1. **Modelo preditivo (Random Forest):** classifica cada trecho de estrada em quatro níveis de risco (baixa, média, alta, intransitável), a partir de dados reais de chuva, solo, topografia e características da via.
 
-**Notas de acesso:**
-- TOPODATA: o INPE ainda serve por `http`; se o navegador bloquear, use "Salvar como" no link, ou o catálogo STAC em `data.inpe.br` (formato COG). Baixe as quadrículas que cobrem o Vale do Jamari / Ariquemes.
-- IBGE Pedologia: usar o recorte **estadual de RO** (mais fino que o nacional 1:5M). Ciente da herança RADAMBRASIL (1:1.000.000) em parte da Amazônia — o solo discrimina *região*, não *trecho vizinho*. Declarar como limitação.
-- Open-Meteo: ERA5-Land tem grid ~11 km — chuva é regional, não local (por design; ver protocolo).
+2. **Painel web de gestão:** um mapa de Ariquemes que mostra os trechos coloridos por risco, permitindo à SEMOSP priorizar a manutenção preventiva com critério técnico. É a interface que a banca acessa.
 
-### 🕓 Tier 2 — baixo custo, se sobrar tempo
+3. **Canal de relato e alerta via WhatsApp:** o produtor recebe avisos de risco e pode relatar atoleiros, alimentando o sistema. Cada relato vira um registro georreferenciado, criando o histórico que hoje não existe.
 
-| Camada | Fonte | Por quê fica em 2º |
-|---|---|---|
-| Cobertura do solo (proxy drenagem) | MapBiomas | barato, mas é complementar |
-| Tráfego + revestimento (proxy) | OpenStreetMap (Overpass: `highway`, `surface`) | exige Overpass QL |
-| Validação de chuva | INMET BDMEP (1–2 estações: Ariquemes, Ji-Paraná) | só valida Open-Meteo; **não interpolar** |
+Um achado central, validado em campo, orienta todo o modelo: o fator número um para uma linha ficar intransitável não é a chuva, e sim a drenagem. A chuva é apenas o gatilho. Essa descoberta recalibrou os pesos do modelo e diferencia a solução de uma abordagem que olharia apenas para a previsão do tempo.
 
-### 📋 Fontes planejadas (documentadas, fora do escopo das 48h)
+## Link do MVP
 
-| Camada | Fonte | Por quê é "futuro" |
-|---|---|---|
-| Passabilidade histórica de vias em cheia | **CENSIPAM** (SIPAMHidro / Centro Regional de Porto Velho) | dados brutos exigem ofício institucional; portais públicos servem consciência situacional, não CSV estruturado |
-| Feature engineering visual (NDWI, poças crônicas, sulcos) | **Google Earth Engine** / Street View | curva de aprendizado + auth incompatíveis com 48h; alto valor em v2 |
-| Tráfego por produção agrícola | **Censo Agropecuário IBGE** | join pesado, sinal indireto |
-| Label-assist da classe "intransitável" | scraping leve de notícias locais | **apenas** como sinal fraco/validação, nunca como label principal (viés de cobertura catastrófica) |
-| Ensaios de solo (pesos do modelo) | Repositório IFRO / BDTD (comportamento mecânico de latossolos em RO) | embasamento teórico, não dado tabular |
+Painel online: https://linha-livre.vercel.app/
 
----
+Acessível por navegador, sem instalação, no computador e no celular (no celular, alterne entre as abas Mapa e Painel).
 
-## Como rodar (Codespaces)
+## Vídeo de pitch
 
-```bash
-pip install -r requirements.txt
+(inserir link do vídeo aqui)
 
-# 1) Chuva — preenche chuva_72h/7d/30d a partir dos centroides
-python src/coleta/coleta_open_meteo.py \
-    --trechos trechos/trechos.geojson \
-    --datas data/raw/datas_alvo.csv \
-    --saida data/interim/chuva.csv
-```
+## Pitch ou apresentação
 
-`requirements.txt` mínimo: `requests pandas geopandas rasterio rasterstats shapely scikit-learn`.
+(inserir link dos slides aqui)
 
----
+## Como testar
 
-## Compromisso de IA responsável
+1. Acesse https://linha-livre.vercel.app/
+2. No mapa, observe os trechos de estrada coloridos conforme o nível de risco (veja a legenda no canto inferior direito).
+3. Clique em um trecho, no mapa ou na lista lateral, para ver seus detalhes: drenagem, solo, largura e chuva acumulada. Clique novamente, ou no botão "ver todas", para voltar à visão geral.
+4. No celular, use as abas "Mapa" e "Painel" no topo para alternar entre as duas visões.
 
-- Todas as fontes são públicas, oficiais e citáveis (INPE, IBGE, Copernicus/ERA5).
-- Pipeline reproduzível; label auditável por protocolo aberto (`label_origin`, `score_total`).
-- Validação por grupo de trecho (anti-vazamento espacial) e features defasadas (anti-vazamento de alvo).
-- Métrica reportada: F1-macro + matriz de confusão, com performance separada no subconjunto verificado.
+Não é necessário login.
+
+## Tecnologias utilizadas
+
+**Painel web:** React, TypeScript, Vite, Leaflet (mapa) e OpenStreetMap (tiles). Hospedagem na Vercel.
+
+**Modelo preditivo:** Python, scikit-learn (Random Forest), pandas, geopandas. Fontes de dados: Open-Meteo (chuva), TOPODATA/INPE (topografia), IBGE (pedologia/solo) e OpenStreetMap (geometria das vias). O detalhe completo do modelo está no diretório `modelo/`.
+
+**Canal de mensagens:** WhatsApp via biblioteca não oficial (whatsapp-web.js), demonstrado no pitch.
+
+## Uso de IA
+
+**Ferramentas utilizadas:** assistentes de IA foram usados como apoio ao desenvolvimento.
+
+**Finalidade:** auxílio na escrita e revisão de código, organização da arquitetura, redação de documentação e textos, e apoio na análise de dados e definição do modelo.
+
+**Partes do projeto apoiadas por IA:** estруturação do painel web, organização do pipeline de dados, redação do README e dos materiais de apresentação.
+
+**O que a equipe revisou, adaptou ou validou:** todas as decisões técnicas, a coleta e validação de dados em campo (entrevistas com SEMOSP, DER e NUCEX), a calibração do modelo de risco e a verificação dos resultados foram conduzidas e revisadas pela equipe. O sistema não utiliza modelos de linguagem (LLM) em tempo de execução; o componente de inteligência é o modelo de machine learning (Random Forest), treinado com dados públicos.
+
+## Validação
+
+A equipe foi a campo antes de desenvolver. Foram realizadas entrevistas com:
+
+- **SEMOSP** (Secretaria Municipal de Obras): confirmou a ausência de registro histórico de atoleiros e o uso de imagens de satélite para avaliar as vias.
+- **DER** (Departamento de Estradas de Rodagem): explicou a influência da topografia e da drenagem sobre a chuva.
+- **NUCEX / Junior** (servidor com 6 anos de experiência em estradas): validou a ordem dos fatores de risco — drenagem acima da chuva — e o caso real de uma linha que deixou de alagar após receber aterro de drenagem.
+
+A Quanyx Tecnologia, proponente do desafio, indicou os trechos prioritários para o piloto e confirmou a inexistência de uma base de dados estruturada sobre as condições das vias.
+
+## Dados e demonstração
+
+A geometria das estradas é real, extraída do OpenStreetMap. O risco exibido é previsto pelo modelo Random Forest, treinado com dados públicos (IBGE, INPE, Open-Meteo). Para a demonstração, parte dos atributos e cenários de chuva é sintética, claramente sinalizada na interface. A arquitetura está pronta para receber dados reais em produção. Essa abordagem foi alinhada com a Quanyx e com a coordenação do curso.
+
+## O que funciona
+
+- Painel web online com mapa de risco dos trechos, responsivo (desktop e celular).
+- Modelo Random Forest treinado e avaliado, classificando trechos por nível de risco.
+- Pipeline de coleta e processamento de dados reais (clima, solo, topografia, vias).
+- Detalhamento por trecho (drenagem, solo, largura, chuva).
+
+## O que ainda pode melhorar
+
+- Integração ao vivo do chatbot de WhatsApp (no MVP, demonstrado no pitch).
+- Mapeamento dos códigos de trecho para os nomes oficiais das linhas (C-65, C-70, etc.).
+- Ampliação do histórico real a partir dos relatos dos usuários, permitindo o retreino contínuo do modelo.
+- Inclusão consistente da classe "intransitável" conforme mais dados de campo forem coletados.
+- Sensores LoRa em pontos isolados sem sinal de internet (evolução futura).
+
+## Licença
+
+Projeto de finalidade acadêmica e extensionista, desenvolvido para a Hackathon Extensionista IFRO Ariquemes 2026/1.
+
+## Repositório
+
+- Código e documentação: https://github.com/Bryan-Serafim/linha-livre
+- Modelo preditivo (detalhes técnicos): diretório `modelo/`
+- GitHub do desenvolvedor do modelo: https://github.com/LeoEliel
