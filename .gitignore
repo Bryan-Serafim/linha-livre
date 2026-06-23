@@ -1,0 +1,29 @@
+# === Node (painel/ e bot/) ===
+node_modules/
+dist/
+build/
+*.log
+npm-debug.log*
+
+# === WhatsApp Web (bot/) — NUNCA versionar credenciais de sessão ===
+.wwebjs_auth/
+.wwebjs_cache/
+
+# === Python (modelo/) ===
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# === Ambiente / segredos ===
+.env
+.env.local
+*.key
+
+# === Sistema / editor ===
+.directory
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

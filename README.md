@@ -67,7 +67,7 @@ Não é necessário login.
 
 **Finalidade:** auxílio na escrita e revisão de código, organização da arquitetura, redação de documentação e textos, e apoio na análise de dados e definição do modelo.
 
-**Partes do projeto apoiadas por IA:** estруturação do painel web, organização do pipeline de dados, redação do README e dos materiais de apresentação.
+**Partes do projeto apoiadas por IA:** estruturação do painel web, organização do pipeline de dados, redação do README e dos materiais de apresentação.
 
 **O que a equipe revisou, adaptou ou validou:** todas as decisões técnicas, a coleta e validação de dados em campo (entrevistas com SEMOSP, DER e NUCEX), a calibração do modelo de risco e a verificação dos resultados foram conduzidas e revisadas pela equipe. O sistema não utiliza modelos de linguagem (LLM) em tempo de execução; o componente de inteligência é o modelo de machine learning (Random Forest), treinado com dados públicos.
 
@@ -99,6 +99,13 @@ A geometria das estradas é real, extraída do OpenStreetMap. O risco exibido é
 - Ampliação do histórico real a partir dos relatos dos usuários, permitindo o retreino contínuo do modelo.
 - Inclusão consistente da classe "intransitável" conforme mais dados de campo forem coletados.
 - Sensores LoRa em pontos isolados sem sinal de internet (evolução futura).
+
+## Plano de teste
+
+O plano mínimo de teste da solução — oráculo, casos de caminho feliz e casos de
+caminho de erro para os três componentes (painel, bot e modelo), ancorado nos
+conceitos da disciplina de Teste de Software (BSTQB, 2023; Coutinho e Nascimento,
+2025) — está em [TESTING.md](TESTING.md).
 
 ## Licença
 
