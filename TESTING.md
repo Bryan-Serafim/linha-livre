@@ -141,7 +141,7 @@ Não há gabarito externo de trafegabilidade. O oráculo é construído em camad
    do DER + 7 de risco baixo).
 3. Há **dois** F1-macro possíveis, e só um é reportável:
 
-   - **CV por trecho (`GroupKFold`, 5 folds) = 0,987 ± 0,011.** Este número é
+   - **CV por trecho (`GroupKFold`, 5 folds) = 0,975 ± 0,029.** Este número é
      **circular e NÃO reportável**: o modelo está apenas reaprendendo a própria
      regra de rotulagem, treinado e testado sobre labels gerados pela mesma regra.
      Alto, mas vazio de significado quanto à realidade.
@@ -154,7 +154,7 @@ Não há gabarito externo de trafegabilidade. O oráculo é construído em camad
 O `n = 9` é pequeno e é tratado como **limitação explícita**, não escondida: o
 F1 verificado é instável com tão poucas âncoras e tende a subir conforme o
 histórico de campo cresce. O argumento à banca é exatamente esse gap entre a CV
-circular (0,987) e o F1 honesto (0,091): ele mede o quanto falta de dado de campo
+circular (0,975) e o F1 honesto (0,091): ele mede o quanto falta de dado de campo
 (drenagem/canaleta, hoje 100% ausentes no modelo) e motiva a coleta contínua.
 
 ### 4.1 Casos de caminho feliz
@@ -175,7 +175,7 @@ circular (0,987) e o F1 honesto (0,091): ele mede o quanto falta de dado de camp
 | ME-03 | Classe "intransitável" com pouquíssimos exemplos | F1-macro reportado com `zero_division=0`; a classe rara não derruba a execução, e a limitação é declarada na banca |
 | ME-04 | Tentativa de avaliar treinando e testando no mesmo trecho | `GroupKFold` impede; split é sempre por `trecho_id` (oráculo de metodologia) |
 | ME-05 | Circularidade regra→modelo | Declarada explicitamente no protocolo (Seção 0): o ganho real vem das correções verificadas e das interações entre features, não de reaprender a regra |
-| ME-06 | Reportar CV de 0,987 como se fosse a acurácia real | **Defeito de interpretação, barrado por documentação:** o relatório imprime os dois blocos lado a lado (CV circular vs. avaliação honesta nas verificadas); o oráculo de aprovação é o F1 verificado = 0,091 (n=9), não a CV. A discrepância é o teste honesto, não um bug a esconder |
+| ME-06 | Reportar CV de 0,975 como se fosse a acurácia real | **Defeito de interpretação, barrado por documentação:** o relatório imprime os dois blocos lado a lado (CV circular vs. avaliação honesta nas verificadas); o oráculo de aprovação é o F1 verificado = 0,091 (n=9), não a CV. A discrepância é o teste honesto, não um bug a esconder |
 | ME-07 | `drenagem`/`canaleta` 100% ausentes no dataset | O treino roda mesmo assim (features caem por `dummy_na`/mediana); a importância de drenagem é ~0 e isso é **declarado como limitação** — o "fator nº1" de projeto ainda não está no modelo |
 
 ---
@@ -191,7 +191,7 @@ circular (0,987) e o F1 honesto (0,091): ele mede o quanto falta de dado de camp
 | Teste estático | PE-05 (tipos TypeScript barram defeito em compilação) |
 | Independência de teste / anti-vazamento | ME-04 (GroupKFold por trecho) |
 | Limitações declaradas (teste honesto) | ME-03, ME-05, ME-06, ME-07; PF-05 (classe sem dado na demo) |
-| CV circular × métrica honesta | Seção 4, oráculo (0,987 não reportável vs. 0,091 reportável) |
+| CV circular × métrica honesta | Seção 4, oráculo (0,975 não reportável vs. 0,091 reportável) |
 
 ---
 
@@ -200,7 +200,7 @@ circular (0,987) e o F1 honesto (0,091): ele mede o quanto falta de dado de camp
 Os casos de caminho feliz dos três componentes foram exercitados manualmente
 durante o desenvolvimento: o painel está online e navegável; o bot foi testado
 em conversa real no WhatsApp Business (QR-code); o modelo treina e reporta os
-**dois** números — a CV por trecho = 0,987 (circular, não reportável) e a
+**dois** números — a CV por trecho = 0,975 (circular, não reportável) e a
 avaliação honesta nas âncoras verificadas = **F1-macro 0,091** (n=9, oráculo de
 aprovação). Os casos de erro de fronteira foram verificados nos pontos
 indicados acima. Este plano é o **mínimo** exigido pelo edital como evidência de

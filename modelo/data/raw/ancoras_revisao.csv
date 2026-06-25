@@ -1,0 +1,10 @@
+linha,municipio,classe,trecho_id_antigo,trecho_id_novo,dist_km,trecho_id_2o,dist_km_2o,confianca,observacao
+RO-010 ponte Rio Canaã,Monte Negro/Cacaulândia,intransitavel,RO-ARQ-4826,RO-ARQ-4198,0.008,RO-ARQ-4199,0.633,alta,Ponte arrastada pela forca das aguas; trecho interditado ate reconstrucao. Mapear o trecho que contem o cruzamento com o Rio Canaa.
+RO-010 ponte Rio Pardo (~6km s/ Gov. Jorge Teixeira),Cacaulândia,intransitavel,RO-ARQ-4804,RO-ARQ-4176,0.003,RO-ARQ-4190,0.699,alta,Agua por cima da ponte (30m de extensao). Mapear o cruzamento com o Rio Pardo.
+RO-010 ponte Rio Bela Vista,Monte Negro/Cacaulândia,baixa,RO-ARQ-0614,RO-ARQ-1371,0.274,RO-ARQ-2937,0.36,media,Cabeceiras comprometidas (nao arrastada). Mapear o cruzamento com o Rio Bela Vista.
+RO-140 Colina Verde (Rio Piripiri),Ariquemes/Rio Crespo,baixa,RO-ARQ-3538,RO-ARQ-2895,0.255,RO-ARQ-1489,0.496,media,Duas pontes com problemas nas cabeceiras chegando em Colina Verde.
+RO-140 Colina Verde (Rio Pardo),Ariquemes/Rio Crespo,baixa,RO-ARQ-7356,RO-ARQ-5120,0.007,RO-ARQ-5116,0.744,media,Duas pontes com problemas nas cabeceiras chegando em Colina Verde.
+RO-257 (regiao de Ariquemes) Primeiro Trecho,Ariquemes,baixa,RO-ARQ-7214,RO-ARQ-0054,0.131,RO-ARQ-3347,0.402,media,Quatro pontes antigas afetadas pela chuva. Trecho amplo; ancorar onde houver cruzamento de rio.
+RO-257 (regiao de Ariquemes) Segundo Trecho,Ariquemes,baixa,RO-ARQ-3470,RO-ARQ-5468,0.501,RO-ARQ-5467,1.028,media,Quatro pontes antigas afetadas pela chuva. Trecho amplo; ancorar onde houver cruzamento de rio.
+RO-257 (regiao de Ariquemes) Terceiro Trecho,Ariquemes,baixa,RO-ARQ-1778,RO-ARQ-0075,0.284,RO-ARQ-3685,0.431,media,Quatro pontes antigas afetadas pela chuva. Trecho amplo; ancorar onde houver cruzamento de rio.
+RO-257 (regiao de Ariquemes) Quarto Trecho,Ariquemes,baixa,RO-ARQ-1779,RO-ARQ-3686,0.059,RO-ARQ-3685,0.694,media,Quatro pontes antigas afetadas pela chuva. Trecho amplo; ancorar onde houver cruzamento de rio.
