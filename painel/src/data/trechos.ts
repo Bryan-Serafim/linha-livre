@@ -1,8 +1,11 @@
 // =============================================================
-// DADOS DOS TRECHOS — LinhaLivre
-// Geometria REAL (OpenStreetMap) | risco previsto pelo Random Forest.
-// Atributos por trecho seguem a TABELA DE COERENCIA do modelo
-// (drenagem e o fator nº1, validado em campo: SEMOSP/DER/NUCEX).
+// DADOS DOS TRECHOS — LinhaLivre (demonstração do painel)
+// Geometria REAL (OpenStreetMap). O risco e os atributos por trecho
+// são ILUSTRATIVOS, montados à mão para a demo do painel — não são a
+// saída do Random Forest por registro (o modelo opera no pipeline em
+// `modelo/`, sobre os trechos da malha estendida). A drenagem é o fator
+// nº1 de PROJETO, validado em campo (SEMOSP/DER/NUCEX); sua incorporação
+// plena ao modelo está em andamento. Coerência interna apenas.
 // =============================================================
 
 export type ClasseRisco = "alta" | "media" | "baixa" | "intransitavel";
@@ -32,7 +35,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 21,
     chuva_72h_mm: 3.0,
     path: [[-9.94186, -63.05523], [-9.94173, -63.05619], [-9.94139, -63.05752], [-9.94151, -63.05788], [-9.94196, -63.05828], [-9.94256, -63.05839], [-9.94312, -63.05846], [-9.94341, -63.05858], [-9.94382, -63.05894], [-9.94447, -63.05995], [-9.94475, -63.06051], [-9.94482, -63.06098], [-9.94495, -63.06125], [-9.94514, -63.06133], [-9.9456, -63.0614], [-9.94605, -63.06149], [-9.94688, -63.062]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0008",
@@ -43,7 +46,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 30,
     chuva_72h_mm: 12.0,
     path: [[-9.86004, -63.05511], [-9.86474, -63.05482], [-9.86558, -63.05477]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0015",
@@ -54,7 +57,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 28,
     chuva_72h_mm: 28.0,
     path: [[-9.98347, -63.08807], [-9.98469, -63.08848], [-9.98611, -63.08885], [-9.9875, -63.08919], [-9.98821, -63.08935], [-9.98881, -63.08949], [-9.98933, -63.08961], [-9.99007, -63.08974], [-9.99094, -63.0899], [-9.9914, -63.08999], [-9.99238, -63.0902], [-9.99301, -63.09033], [-9.99371, -63.09047], [-9.99415, -63.09057], [-9.99533, -63.09083], [-9.9958, -63.09093], [-9.99601, -63.09097]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0022",
@@ -65,7 +68,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 22,
     chuva_72h_mm: 45.0,
     path: [[-9.93512, -63.0001], [-9.93383, -63.00002], [-9.9333, -63.00008]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0029",
@@ -76,7 +79,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 26,
     chuva_72h_mm: 70.0,
     path: [[-9.92883, -63.0754], [-9.92905, -63.07514], [-9.92945, -63.07466], [-9.93008, -63.07395], [-9.93092, -63.07301], [-9.9311, -63.07256], [-9.93131, -63.07186], [-9.93147, -63.07135], [-9.93188, -63.06998], [-9.93198, -63.06899], [-9.93197, -63.06892], [-9.93191, -63.06824], [-9.93184, -63.068], [-9.93168, -63.06733], [-9.93162, -63.06707], [-9.93149, -63.06623], [-9.9315, -63.06615], [-9.93149, -63.06585], [-9.93205, -63.06401], [-9.93209, -63.06385], [-9.93228, -63.06364], [-9.93275, -63.06314], [-9.93276, -63.06305], [-9.93275, -63.06294], [-9.93262, -63.06249], [-9.93249, -63.06204]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0036",
@@ -87,7 +90,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 30,
     chuva_72h_mm: 95.0,
     path: [[-9.93289, -62.86468], [-9.93313, -62.86419], [-9.93306, -62.86392], [-9.93294, -62.86349], [-9.93288, -62.86266], [-9.93282, -62.86179], [-9.93283, -62.86137], [-9.93286, -62.86111], [-9.93289, -62.86084], [-9.933, -62.86058], [-9.93296, -62.86033], [-9.93278, -62.85984], [-9.93275, -62.8595], [-9.93284, -62.85747], [-9.93284, -62.85475], [-9.93278, -62.85379], [-9.93233, -62.85322]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0043",
@@ -98,7 +101,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 14,
     chuva_72h_mm: 3.0,
     path: [[-9.90598, -62.90863], [-9.90606, -62.90855], [-9.90616, -62.90836], [-9.90622, -62.90806], [-9.90623, -62.90775], [-9.90621, -62.90739], [-9.90626, -62.90701], [-9.90642, -62.90644], [-9.90647, -62.90604], [-9.9064, -62.90548], [-9.90627, -62.90518], [-9.9062, -62.90473], [-9.90616, -62.90414], [-9.90617, -62.90381], [-9.90615, -62.90311], [-9.90618, -62.90251], [-9.90619, -62.90209], [-9.9062, -62.90146], [-9.9062, -62.90065], [-9.9062, -62.90035]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0050",
@@ -109,7 +112,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 17,
     chuva_72h_mm: 12.0,
     path: [[-9.86634, -63.05811], [-9.86779, -63.05407], [-9.86845, -63.05203]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0057",
@@ -120,7 +123,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 29,
     chuva_72h_mm: 28.0,
     path: [[-9.93853, -63.15462], [-9.9385, -63.15554], [-9.93854, -63.15615], [-9.93855, -63.15751], [-9.93846, -63.15782], [-9.93833, -63.15828], [-9.93838, -63.15848], [-9.9387, -63.15917], [-9.93872, -63.1594], [-9.93869, -63.15985], [-9.93872, -63.16124], [-9.93876, -63.16217], [-9.93877, -63.1635], [-9.93882, -63.16426], [-9.93888, -63.16558], [-9.93896, -63.16757], [-9.93896, -63.16842]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0064",
@@ -131,7 +134,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 30,
     chuva_72h_mm: 45.0,
     path: [[-9.85002, -63.08488], [-9.85598, -63.08522], [-9.86422, -63.0857]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0071",
@@ -142,7 +145,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 27,
     chuva_72h_mm: 70.0,
     path: [[-9.9063, -62.90912], [-9.90616, -62.90916], [-9.90608, -62.9092], [-9.90605, -62.90925], [-9.90604, -62.90936], [-9.90605, -62.90973], [-9.90602, -62.9099], [-9.90597, -62.91], [-9.90592, -62.91004], [-9.90579, -62.91006], [-9.90567, -62.91008], [-9.90525, -62.9101], [-9.90502, -62.9101], [-9.90488, -62.91008], [-9.90484, -62.91003], [-9.90477, -62.90991], [-9.90472, -62.90972], [-9.90466, -62.90963], [-9.90457, -62.90956], [-9.90437, -62.90946], [-9.90424, -62.90942]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0078",
@@ -153,7 +156,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 27,
     chuva_72h_mm: 95.0,
     path: [[-9.89996, -62.92689], [-9.90028, -62.9269], [-9.90078, -62.9269], [-9.90149, -62.92691], [-9.90156, -62.92691], [-9.90163, -62.92689], [-9.90166, -62.92684], [-9.90168, -62.92677], [-9.90168, -62.92619], [-9.90167, -62.92557], [-9.90165, -62.92446], [-9.90165, -62.92402]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0085",
@@ -164,7 +167,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 28,
     chuva_72h_mm: 3.0,
     path: [[-9.88664, -62.90505], [-9.88671, -62.90503], [-9.88681, -62.90501], [-9.88689, -62.90501], [-9.88691, -62.905], [-9.88692, -62.905], [-9.88694, -62.90499], [-9.88694, -62.90498], [-9.88695, -62.90494], [-9.88695, -62.90459], [-9.88697, -62.90416], [-9.88697, -62.90378], [-9.88697, -62.90349], [-9.88696, -62.90323], [-9.88697, -62.90212], [-9.88696, -62.9012], [-9.88696, -62.90055], [-9.88699, -62.90032]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0092",
@@ -175,7 +178,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 25,
     chuva_72h_mm: 12.0,
     path: [[-9.89288, -62.90028], [-9.89234, -62.90122], [-9.89181, -62.90222], [-9.8913, -62.90319], [-9.89082, -62.90403], [-9.89065, -62.90435], [-9.89062, -62.90478], [-9.89061, -62.90535], [-9.89053, -62.90619], [-9.89036, -62.90732], [-9.89006, -62.90819], [-9.88984, -62.90899], [-9.88956, -62.90947], [-9.88936, -62.90956], [-9.88888, -62.90957], [-9.88849, -62.90945], [-9.88812, -62.90922], [-9.88787, -62.90924], [-9.88748, -62.90948], [-9.88685, -62.91013]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0099",
@@ -186,7 +189,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 20,
     chuva_72h_mm: 28.0,
     path: [[-9.90407, -62.94493], [-9.90411, -62.94483], [-9.90424, -62.94447], [-9.90429, -62.94432], [-9.90433, -62.94424], [-9.90439, -62.94421], [-9.90463, -62.9442], [-9.90505, -62.94419], [-9.90558, -62.9442], [-9.90629, -62.94419], [-9.90765, -62.94417], [-9.90925, -62.94416], [-9.91002, -62.94415], [-9.91041, -62.94414], [-9.91065, -62.9441], [-9.91094, -62.94405], [-9.91154, -62.944], [-9.91247, -62.94402], [-9.9128, -62.94401], [-9.91295, -62.94394], [-9.91346, -62.9436], [-9.91367, -62.9434]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0106",
@@ -197,7 +200,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 29,
     chuva_72h_mm: 45.0,
     path: [[-9.95808, -63.01495], [-9.95899, -63.01665], [-9.96179, -63.02173], [-9.96169, -63.02198], [-9.9601, -63.02395], [-9.95979, -63.02417], [-9.95828, -63.02167]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0113",
@@ -208,7 +211,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 26,
     chuva_72h_mm: 70.0,
     path: [[-9.86609, -63.07474], [-9.86679, -63.07483], [-9.86718, -63.07491], [-9.86843, -63.075], [-9.86858, -63.0749], [-9.86858, -63.07464], [-9.86867, -63.07386], [-9.86883, -63.07346], [-9.86935, -63.07299], [-9.87032, -63.07223], [-9.87095, -63.072], [-9.8712, -63.07192], [-9.87225, -63.0715], [-9.87503, -63.07025], [-9.87586, -63.06988]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0120",
@@ -219,7 +222,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 30,
     chuva_72h_mm: 95.0,
     path: [[-9.86121, -63.04725], [-9.861, -63.0475], [-9.86082, -63.04782], [-9.86068, -63.04798], [-9.86061, -63.04804], [-9.86039, -63.04859], [-9.86013, -63.04888], [-9.85962, -63.04915], [-9.85904, -63.04933], [-9.85877, -63.0495], [-9.85812, -63.04961], [-9.85765, -63.04961], [-9.85715, -63.04962], [-9.8568, -63.04979], [-9.85663, -63.05005]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0127",
@@ -230,7 +233,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 17,
     chuva_72h_mm: 3.0,
     path: [[-9.91818, -62.94914], [-9.92099, -62.94784], [-9.92022, -62.94609], [-9.92064, -62.94148], [-9.92004, -62.93703], [-9.92001, -62.93621], [-9.91995, -62.9346]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0134",
@@ -241,7 +244,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 26,
     chuva_72h_mm: 12.0,
     path: [[-9.87651, -63.1132], [-9.87648, -63.11328], [-9.87669, -63.1151], [-9.87674, -63.11585], [-9.8772, -63.11666], [-9.86656, -63.11741]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0141",
@@ -252,7 +255,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 28,
     chuva_72h_mm: 28.0,
     path: [[-9.88209, -63.01548], [-9.88327, -63.01548], [-9.88374, -63.01548], [-9.88377, -63.01692], [-9.88805, -63.0169]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0148",
@@ -263,7 +266,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 25,
     chuva_72h_mm: 45.0,
     path: [[-9.88788, -62.99928], [-9.88365, -62.99915], [-9.88144, -62.99905], [-9.88059, -62.99958], [-9.88039, -62.99998]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0155",
@@ -274,7 +277,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 29,
     chuva_72h_mm: 70.0,
     path: [[-9.93847, -62.98248], [-9.93891, -62.98356], [-9.9404, -62.98422], [-9.94036, -62.98593], [-9.9416, -62.98732], [-9.94211, -62.98796], [-9.94306, -62.98886], [-9.94397, -62.98945], [-9.94494, -62.99001], [-9.94545, -62.9905], [-9.94653, -62.9912], [-9.94717, -62.99158], [-9.94735, -62.99299], [-9.94798, -62.99404], [-9.94851, -62.995], [-9.94841, -62.99577]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0162",
@@ -285,7 +288,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 28,
     chuva_72h_mm: 95.0,
     path: [[-9.92784, -63.05271], [-9.92872, -63.05313], [-9.92832, -63.05397], [-9.9278, -63.05397], [-9.92771, -63.05437], [-9.92748, -63.05476], [-9.92737, -63.05487]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0169",
@@ -296,7 +299,7 @@ export const TRECHOS: Trecho[] = [
     largura_m: 15,
     chuva_72h_mm: 3.0,
     path: [[-9.92999, -63.07792], [-9.93054, -63.07784], [-9.93066, -63.07771], [-9.93064, -63.07743], [-9.93108, -63.07707], [-9.93122, -63.07718], [-9.93155, -63.07697], [-9.93196, -63.07721]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   },
   {
     id: "RO-ARQ-0176",
@@ -307,6 +310,6 @@ export const TRECHOS: Trecho[] = [
     largura_m: 21,
     chuva_72h_mm: 12.0,
     path: [[-9.86242, -63.06442], [-9.86293, -63.06242], [-9.86348, -63.0607]],
-    origem_dado: "geometria real (OSM); risco previsto pelo Random Forest",
+    origem_dado: "geometria real (OSM); risco ilustrativo de demonstração",
   }
 ];

@@ -56,7 +56,7 @@ def carrega_centroides(caminho_trechos):
     })
 
 
-def busca_serie(lat, lon, dt_inicio, dt_fim, tentativas=3):
+def busca_serie(lat, lon, dt_inicio, dt_fim, tentativas=6):
     """Retorna dict {data(str): precipitacao_mm} para o intervalo pedido."""
     params = {
         "latitude": lat,
@@ -69,13 +69,19 @@ def busca_serie(lat, lon, dt_inicio, dt_fim, tentativas=3):
     for t in range(tentativas):
         try:
             r = requests.get(ARCHIVE_URL, params=params, timeout=30)
+            if r.status_code == 429:
+                espera = float(r.headers.get("Retry-After", min(60, 5 * (t + 1))))
+                print(f"  429 (rate limit) em ({lat},{lon}); aguardando {espera:.0f}s...")
+                time.sleep(espera)
+                continue
             r.raise_for_status()
             d = r.json()["daily"]
             return dict(zip(d["time"], d["precipitation_sum"]))
         except Exception as e:  # noqa: BLE001
             if t == tentativas - 1:
-                raise
-            time.sleep(2 ** t)  # backoff
+                print(f"  AVISO: falhou definitivamente em ({lat},{lon}): {e}")
+                return {}
+            time.sleep(min(30, 2 ** t))  # backoff
     return {}
 
 
@@ -110,16 +116,24 @@ def main():
         raise SystemExit("Nenhuma data-alvo fornecida (--datas ou --datas-fixas).")
 
     # Cache por célula de grid: arredonda p/ deduplicar pontos quase iguais.
+    # 0.1 grau (~11km) casa com a resolucao real do ERA5-Land -- pontos mais
+    # proximos que isso ja retornariam o mesmo valor, nao ha porque gastar
+    # chamadas de API (limitadas) distinguindo-os.
     inicio_global = min(datas) - timedelta(days=MAX_JANELA)
     fim_global = max(datas)
     cache = {}
 
+    falhas = 0
     linhas = []
-    for _, row in centroides.iterrows():
-        chave = (round(row.lat_centroide, 2), round(row.lon_centroide, 2))
+    for i, row in centroides.iterrows():
+        chave = (round(row.lat_centroide, 1), round(row.lon_centroide, 1))
         if chave not in cache:
             cache[chave] = busca_serie(chave[0], chave[1], inicio_global, fim_global)
-            time.sleep(0.3)  # gentil com a API
+            if not cache[chave]:
+                falhas += 1
+            time.sleep(1.5)  # gentil com a API (free tier tem rate limit agressivo)
+            if len(cache) % 10 == 0:
+                print(f"  ... {len(cache)} celulas de grid consultadas ({falhas} falhas)")
         serie = cache[chave]
 
         for d in datas:
@@ -138,7 +152,7 @@ def main():
     df.to_csv(args.saida, index=False)
     print(f"OK: {len(df)} linhas ({len(centroides)} trechos x {len(datas)} datas) "
           f"-> {args.saida}")
-    print(f"Chamadas à API: {len(cache)} (células de grid únicas)")
+    print(f"Chamadas à API: {len(cache)} (células de grid únicas, {falhas} sem dados)")
 
 
 if __name__ == "__main__":

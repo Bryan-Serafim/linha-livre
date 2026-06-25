@@ -8,8 +8,14 @@ env/
 
 # dados pesados (nao versionar rasters/zip grandes)
 data/raw/compressed/
+data/raw/_extr/
 data/raw/*.tif
 *.tar.gz
+*.zip
+*.shp
+*.shx
+*.dbf
+*.prj
 
 # saidas locais
 data/processed/*.csv

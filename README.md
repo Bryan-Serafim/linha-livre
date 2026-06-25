@@ -28,7 +28,7 @@ O LinhaLivre é composto por três partes que trabalham juntas:
 
 3. **Canal de relato e alerta via WhatsApp:** o produtor recebe avisos de risco e pode relatar atoleiros, alimentando o sistema. Cada relato vira um registro georreferenciado, criando o histórico que hoje não existe.
 
-Um achado central, validado em campo, orienta todo o modelo: o fator número um para uma linha ficar intransitável não é a chuva, e sim a drenagem. A chuva é apenas o gatilho. Essa descoberta recalibrou os pesos do modelo e diferencia a solução de uma abordagem que olharia apenas para a previsão do tempo.
+Um achado central, validado em campo, orienta a solução: o fator número um para uma linha ficar intransitável não é a chuva, e sim a drenagem. A chuva é apenas o gatilho. Hoje os dados de drenagem/canaleta por trecho ainda não estão disponíveis em base estruturada, então a drenagem entra como o **fator de projeto priorizado** — a coleta de campo e sua incorporação plena ao modelo estão em andamento. Os drivers já ativos no modelo são a chuva acumulada (72h/7d/30d) e a topografia (declividade, fração íngreme); a drenagem é o próximo dado a fechar essa lacuna, e é justamente esse gap entre regra e campo que diferencia a solução de uma abordagem que olharia apenas para a previsão do tempo.
 
 ## Link do MVP
 
@@ -83,7 +83,7 @@ A Quanyx Tecnologia, proponente do desafio, indicou os trechos prioritários par
 
 ## Dados e demonstração
 
-A geometria das estradas é real, extraída do OpenStreetMap. O risco exibido é previsto pelo modelo Random Forest, treinado com dados públicos (IBGE, INPE, Open-Meteo). Para a demonstração, parte dos atributos e cenários de chuva é sintética, claramente sinalizada na interface. A arquitetura está pronta para receber dados reais em produção. Essa abordagem foi alinhada com a Quanyx e com a coordenação do curso.
+A geometria das estradas é real, extraída do OpenStreetMap. O modelo Random Forest é treinado no pipeline (`modelo/`) sobre a malha de trechos, com dados públicos (IBGE, INPE, Open-Meteo). No painel de demonstração, porém, o risco e os atributos exibidos por trecho são **ilustrativos, montados à mão** para a navegação da banca — não são a saída do RF por registro. Os cenários de chuva e parte dos atributos são sintéticos, claramente sinalizados na interface. A arquitetura está pronta para conectar a saída do modelo ao painel em produção. Essa abordagem foi alinhada com a Quanyx e com a coordenação do curso.
 
 ## O que funciona
 
