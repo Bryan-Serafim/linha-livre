@@ -1,6 +1,12 @@
 // =============================================================
 // LinhaLivre — Chatbot de Trafegabilidade (WhatsApp)
 // Hackathon IFRO Ariquemes 2026 — Equipe Hagatangos
+//
+// DEMONSTRAÇÃO RULE-BASED. O bot NÃO consulta o modelo Random Forest:
+// o risco vem da tabela estática `RISCO` abaixo (c-65/c-70/c-60/b-40),
+// montada à mão para a demo do pitch. Seu oráculo de teste é a própria
+// tabela `RISCO` local (ver TESTING.md, Seção 3), não a saída do modelo.
+// A integração ao vivo com o pipeline é evolução futura (ver README).
 // =============================================================
 
 const { Client, LocalAuth } = require("whatsapp-web.js");

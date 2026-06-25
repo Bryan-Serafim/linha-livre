@@ -46,7 +46,8 @@ valor limite).
 **URL:** https://linha-livre.vercel.app/
 **Tecnologias:** React, TypeScript, Vite, Leaflet, OpenStreetMap.
 **Fonte de verdade:** `painel/src/data/trechos.ts` (26 trechos, geometria real
-do OSM; risco previsto pelo Random Forest).
+do OSM; risco e atributos **ilustrativos de demonstração**, montados à mão — não
+são a saída do RF por registro, que roda no pipeline em `modelo/`).
 
 ### Oráculo
 Uma renderização do painel está **correta** quando, para cada trecho:
@@ -68,7 +69,7 @@ visual é uma função determinística dela.
 | PF-02 | Clicar em um trecho de risco "alta" no mapa | Card de detalhe abre com `classe_risco = alta` (laranja), e drenagem/solo/largura/chuva idênticos a `trechos.ts` |
 | PF-03 | Clicar no mesmo trecho de novo (ou em "ver todas") | Volta à visão geral, sem trecho selecionado |
 | PF-04 | Abrir no celular e alternar abas "Mapa" / "Painel" | Cada aba mostra sua visão; estado de seleção é preservado na troca |
-| PF-05 | Selecionar um trecho "intransitável" | Card vermelho, com destaque visual (pulse) coerente com o nível crítico |
+| PF-05 | Renderização da classe "intransitável" (estilo vermelho + pulse) | O estilo crítico existe no código e no union type `ClasseRisco`; **a base de demonstração atual (`trechos.ts`) não inclui trecho intransitável** — caso marcado como fora do escopo da demo até haver dado verificado para o painel (ver limitação na Seção 4) |
 
 ### 2.2 Casos de caminho de erro / fronteira
 
@@ -129,20 +130,32 @@ Linhas conhecidas pelo bot: `C-65` (alta), `C-70` (intransitável), `C-60`
 **Arquivos:** `modelo/src/modelo/treina_rf.py`, `modelo/src/rotulagem/aplica_regra.py`.
 **Protocolo do oráculo:** `modelo/docs/PROTOCOLO_ROTULAGEM.md`.
 
-### Oráculo (probabilístico)
-Não há gabarito externo de trafegabilidade. O oráculo é construído em três camadas:
+### Oráculo (probabilístico) — dois números, não confundir
+Não há gabarito externo de trafegabilidade. O oráculo é construído em camadas:
 
 1. **Função de rotulagem** (regra física do protocolo, Seção 3) gera label
-   provisório para todos os trechos — `label_origin = "regra"`.
+   provisório para todos os trechos — `label_origin = "regra"` (73.503 linhas).
 2. **Verificação amostral** por evidência real (campo SEMOSP/DER/NUCEX, notícia
    datada, observação de seca) sobrescreve a regra onde diverge —
-   `label_origin = "verificado"`.
-3. A **métrica honesta** é o F1-macro medido **apenas no subconjunto
-   verificado**, com validação cruzada **por trecho** (`GroupKFold` em
-   `trecho_id`), nunca aleatória por linha — para impedir vazamento espacial.
+   `label_origin = "verificado"` (9 âncoras de fev-2022: 2 pontes intransitáveis
+   do DER + 7 de risco baixo).
+3. Há **dois** F1-macro possíveis, e só um é reportável:
 
-O critério de aprovação adotado: **F1-macro ≈ 0,74** no protocolo atual, valor
-reportável à banca.
+   - **CV por trecho (`GroupKFold`, 5 folds) = 0,987 ± 0,011.** Este número é
+     **circular e NÃO reportável**: o modelo está apenas reaprendendo a própria
+     regra de rotulagem, treinado e testado sobre labels gerados pela mesma regra.
+     Alto, mas vazio de significado quanto à realidade.
+   - **F1-macro no subconjunto verificado = 0,091** (treino nas 73.503 linhas de
+     `regra`, teste nas **9 âncoras verificadas** em campo; acerto 2/9). Este é o
+     **oráculo de aprovação reportável à banca**. É baixo e honesto: o modelo
+     treinado na regra **não reproduz** os eventos reais de fev-2022 — em
+     particular erra 0/2 nas pontes arrastadas (regra→intransitável vs. campo).
+
+O `n = 9` é pequeno e é tratado como **limitação explícita**, não escondida: o
+F1 verificado é instável com tão poucas âncoras e tende a subir conforme o
+histórico de campo cresce. O argumento à banca é exatamente esse gap entre a CV
+circular (0,987) e o F1 honesto (0,091): ele mede o quanto falta de dado de campo
+(drenagem/canaleta, hoje 100% ausentes no modelo) e motiva a coleta contínua.
 
 ### 4.1 Casos de caminho feliz
 
@@ -150,7 +163,7 @@ reportável à banca.
 |----|----------------|------------------------------|
 | MF-01 | Rodar `treina_rf.py` no dataset processado | Imprime distribuição de classes, F1-macro por fold e médio, matriz de confusão e importância das features |
 | MF-02 | Trecho seco, drenagem boa, solo arenoso | Regra/modelo classificam como **baixa** (escoamento adequado) |
-| MF-03 | Trecho encharcado (chuva_72h ≥ 80), drenagem ausente | Regra/modelo classificam como **intransitável** |
+| MF-03 | Trecho íngreme sob chuva extrema (score da regra > 8, ex.: pontes de fev-2022) **ou** âncora verificada de evento real | Regra/modelo classificam como **intransitável**. Obs.: a classe vem do score (chuva acumulada + fração íngreme) ou de âncora de campo — **não** de `drenagem`, que ainda é 100% ausente no modelo (importância ~0) |
 | MF-04 | Conferir que `trecho_id` e coordenadas **não** entram como feature | Lista de features impressa exclui as colunas de `EXCLUI` (anti-vazamento) |
 
 ### 4.2 Casos de caminho de erro / fronteira
@@ -162,6 +175,8 @@ reportável à banca.
 | ME-03 | Classe "intransitável" com pouquíssimos exemplos | F1-macro reportado com `zero_division=0`; a classe rara não derruba a execução, e a limitação é declarada na banca |
 | ME-04 | Tentativa de avaliar treinando e testando no mesmo trecho | `GroupKFold` impede; split é sempre por `trecho_id` (oráculo de metodologia) |
 | ME-05 | Circularidade regra→modelo | Declarada explicitamente no protocolo (Seção 0): o ganho real vem das correções verificadas e das interações entre features, não de reaprender a regra |
+| ME-06 | Reportar CV de 0,987 como se fosse a acurácia real | **Defeito de interpretação, barrado por documentação:** o relatório imprime os dois blocos lado a lado (CV circular vs. avaliação honesta nas verificadas); o oráculo de aprovação é o F1 verificado = 0,091 (n=9), não a CV. A discrepância é o teste honesto, não um bug a esconder |
+| ME-07 | `drenagem`/`canaleta` 100% ausentes no dataset | O treino roda mesmo assim (features caem por `dummy_na`/mediana); a importância de drenagem é ~0 e isso é **declarado como limitação** — o "fator nº1" de projeto ainda não está no modelo |
 
 ---
 
@@ -175,7 +190,8 @@ reportável à banca.
 | Tratamento de exceção | BE-06 (guardas do bot), PE-01 (rede offline) |
 | Teste estático | PE-05 (tipos TypeScript barram defeito em compilação) |
 | Independência de teste / anti-vazamento | ME-04 (GroupKFold por trecho) |
-| Limitações declaradas (teste honesto) | ME-03, ME-05 |
+| Limitações declaradas (teste honesto) | ME-03, ME-05, ME-06, ME-07; PF-05 (classe sem dado na demo) |
+| CV circular × métrica honesta | Seção 4, oráculo (0,987 não reportável vs. 0,091 reportável) |
 
 ---
 
@@ -183,8 +199,10 @@ reportável à banca.
 
 Os casos de caminho feliz dos três componentes foram exercitados manualmente
 durante o desenvolvimento: o painel está online e navegável; o bot foi testado
-em conversa real no WhatsApp Business (QR-code); o modelo treina e reporta
-F1-macro ≈ 0,74. Os casos de erro de fronteira foram verificados nos pontos
+em conversa real no WhatsApp Business (QR-code); o modelo treina e reporta os
+**dois** números — a CV por trecho = 0,987 (circular, não reportável) e a
+avaliação honesta nas âncoras verificadas = **F1-macro 0,091** (n=9, oráculo de
+aprovação). Os casos de erro de fronteira foram verificados nos pontos
 indicados acima. Este plano é o **mínimo** exigido pelo edital como evidência de
 qualidade; a suíte automatizada formal da disciplina foi desenvolvida sobre o
 projeto-base de internet banking (repositório separado).
